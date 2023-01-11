@@ -23,8 +23,7 @@ function App() {
   const [showInput, setShowInput] = useState(false)
   const [usersToDelete, setUsersToDelete] = useState([])
   const [idsChecked, setIdsChecked] = useState([])
-
-  console.log(idsChecked[0])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     let nameRepeatedFromArray = persons.find(
@@ -45,12 +44,17 @@ function App() {
     } else {
       const confirm = window.confirm('Delete All users?')
       if (confirm) {
-        idsChecked.forEach((id) => {
-          personsService.deletePerson(id).then((returnedPerson) => {
-            setPersons(persons.filter((person) => person.id !== id))
-          })
+        setIsLoading(true)
+        const deletePromises = idsChecked.map((id) =>
+          personsService.deletePerson(id)
+        )
+        Promise.all(deletePromises).then(() => {
+          setPersons(
+            persons.filter((person) => !idsChecked.includes(person.id))
+          )
+          setIdsChecked([])
+          setIsLoading(false)
         })
-        setIdsChecked([])
       }
     }
   }
@@ -78,6 +82,7 @@ function App() {
         `${nameRepeated.name} is already added to phonebook, replace the old number with a new one?`
       )
       if (confirm) {
+        setIsLoading(true)
         personsService
           .updatePerson(id, phoneChanged)
           .then((returnedPerson) => {
@@ -86,6 +91,7 @@ function App() {
                 person.id !== id ? person : returnedPerson
               )
             )
+            setIsLoading(false)
           })
           .catch(() => setIsError(true))
         setNewName('')
@@ -98,6 +104,7 @@ function App() {
     } else if (!newNumber) {
       alert(`Add a number`)
     } else {
+      setIsLoading(true)
       setNotificationShowed(true)
       setNumberChanged(null)
       setShowInput(false)
@@ -110,6 +117,7 @@ function App() {
           setMinName(false)
           setMinNumber(false)
           setNumberForm(false)
+          setIsLoading(false)
         })
         .catch((error) => {
           const { data } = error.response
@@ -154,6 +162,11 @@ function App() {
 
   return (
     <BrowserRouter>
+      {isLoading && (
+        <h1 className='text-6xl absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2'>
+          LOADING...
+        </h1>
+      )}
       <div className='bg-slate-800 text-white h-screen flex items-center justify-center flex-col'>
         <Navbar />
         <div>
