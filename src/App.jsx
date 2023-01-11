@@ -24,6 +24,8 @@ function App() {
   const [usersToDelete, setUsersToDelete] = useState([])
   const [idsChecked, setIdsChecked] = useState([])
 
+  console.log(idsChecked[0])
+
   useEffect(() => {
     let nameRepeatedFromArray = persons.find(
       (person) => person.name.toLowerCase() === newName.toLowerCase()
@@ -32,22 +34,25 @@ function App() {
   }, [newName])
 
   const handleDelete = () => {
-    // const personToDelete = persons.find((person) => person.id === id)
-    // const confirm = window.confirm(`Delete ${personToDelete.name}?`)
-    // if (confirm) {
-    //   personsService.deletePerson(id).then((returnedPerson) => {
-    //     setPersons(persons.filter((person) => person.id !== id))
-    //   })
-    // }
-    idsChecked.forEach((id) => {
+    if (idsChecked.length === 1) {
+      const confirm = window.confirm('Delete User?')
+      if (confirm) {
+        personsService.deletePerson(idsChecked[0]).then((returnedPerson) => {
+          setPersons(persons.filter((person) => person.id !== idsChecked[0]))
+        })
+        setIdsChecked([])
+      }
+    } else {
       const confirm = window.confirm('Delete All users?')
       if (confirm) {
-        personsService.deletePerson(id).then((returnedPerson) => {
-          setPersons(persons.filter((person) => person.id !== id))
+        idsChecked.forEach((id) => {
+          personsService.deletePerson(id).then((returnedPerson) => {
+            setPersons(persons.filter((person) => person.id !== id))
+          })
         })
+        setIdsChecked([])
       }
-    })
-    setIdsChecked([])
+    }
   }
 
   const handleCheckbox = (e) => {
@@ -129,8 +134,6 @@ function App() {
         })
     }
   }
-
-  // console.log(numberForm)
 
   useEffect(() => {
     personsService

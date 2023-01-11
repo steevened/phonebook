@@ -9,7 +9,7 @@ const PersonsTable = ({
 }) => {
   const [isAllDisabled, setIsAllDisabled] = useState(false)
 
-  console.log(idsChecked)
+  // console.log(idsChecked)
 
   return (
     <div className='table border  rounded-xl overflow-hidden'>
