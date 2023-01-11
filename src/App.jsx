@@ -36,10 +36,11 @@ function App() {
   const handleDelete = () => {
     if (!idsChecked.length <= 0) {
       if (idsChecked.length === 1) {
-        const confirm = window.confirm('Delete User?')
+        const name = persons.filter((person) => person.id === idsChecked[0])
+        const confirm = window.confirm(`Delete ${name[0].name}?`)
         if (confirm) {
           setIsLoading(true)
-          personsService.deletePerson(idsChecked[0]).then((returnedPerson) => {
+          personsService.deletePerson(idsChecked[0]).then(() => {
             setPersons(persons.filter((person) => person.id !== idsChecked[0]))
             setIsLoading(false)
             setIdsChecked([])
@@ -174,23 +175,22 @@ function App() {
         <Navbar />
         <div>
           <div>
-            {showInput && (
-              <>
-                <div
-                  onClick={() => setShowInput(false)}
-                  className='absolute inset-0  z-10 '
-                ></div>
+            <div
+              onClick={() => setShowInput(false)}
+              className={`absolute inset-0 z-10 backdrop-blur-sm transition-all duration-500 ease-in-out bg-black/95 ${
+                showInput ? 'opacity-100' : 'opacity-0 -z-40'
+              }`}
+            ></div>
 
-                <PersonsForm
-                  handleSubmit={handleSubmit}
-                  newName={newName}
-                  setNewName={setNewName}
-                  newNumber={newNumber}
-                  setNewNumber={setNewNumber}
-                  handleDelete={handleDelete}
-                />
-              </>
-            )}
+            <PersonsForm
+              handleSubmit={handleSubmit}
+              newName={newName}
+              setNewName={setNewName}
+              newNumber={newNumber}
+              setNewNumber={setNewNumber}
+              handleDelete={handleDelete}
+              showInput={showInput}
+            />
           </div>
         </div>
         <div className='w-full absolute  top-16 bottom-0 flex items-center justify-center'>

@@ -6,10 +6,13 @@ const PersonsForm = ({
   setNewName,
   newNumber,
   setNewNumber,
+  showInput,
 }) => {
   return (
     <form
-      className='absolute inset-0 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 border flex items-center justify-center flex-col z-20 bg-black'
+      className={`absolute inset-0 transition-all ease-in-out duration-700  border-[#333] border rounded-lg flex items-center justify-center flex-col z-20 bg-black -translate-x-1/2  top-1/2 left-1/2 ${
+        showInput ? '-translate-y-1/2' : '-translate-y-full top-0'
+      }`}
       onSubmit={handleSubmit}
     >
       <label htmlFor='name'>Name</label>
