@@ -12,8 +12,8 @@ const PersonsTable = ({
   // console.log(idsChecked)
 
   return (
-    <div className='table border  rounded-xl overflow-hidden'>
-      <div className='head'>
+    <div className='overflow-hidden w-5/6 sm:w-4/6 max-w-lg mx-auto absolute top-12 shadow-lg shadow-black/60'>
+      <div className='head bg-neutral-900'>
         <div className='row flex justify-between  p-4'>
           <div className='th '>
             <input
@@ -25,11 +25,11 @@ const PersonsTable = ({
           <div className='th'>Number</div>
         </div>
       </div>
-      <div className='body'>
+      <div className='body bg-neutral-700 overflow-auto'>
         {persons.map((person) => (
           <div
             key={person.id}
-            className='tr flex justify-between border-t py-3 px-4'
+            className='tr flex justify-between border-t border-neutral-500 py-3 px-4'
           >
             <div>
               <input
@@ -48,9 +48,26 @@ const PersonsTable = ({
           </div>
         ))}
       </div>
-      <div className='ft border-t py-5'>
-        <button onClick={handleDelete}>
-          <IoTrashOutline />
+      <div className='ft border-t py-2 border-neutral-500 bg-neutral-900 flex justify-between items-center px-5 h-12'>
+        <div>
+          {idsChecked.length <= 0 ? (
+            <p></p>
+          ) : idsChecked.length === 1 ? (
+            <p>1 User selected</p>
+          ) : (
+            <p>{`${idsChecked.length}`} Users selected</p>
+          )}
+        </div>
+
+        <button
+          onClick={handleDelete}
+          disabled={idsChecked.length <= 0 ? true : false}
+        >
+          <IoTrashOutline
+            className={`transition-all ${
+              idsChecked.length <= 0 ? 'scale-0' : 'scale-100'
+            }`}
+          />
         </button>
       </div>
     </div>

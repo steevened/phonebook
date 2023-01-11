@@ -33,28 +33,30 @@ function App() {
   }, [newName])
 
   const handleDelete = () => {
-    if (idsChecked.length === 1) {
-      const confirm = window.confirm('Delete User?')
-      if (confirm) {
-        personsService.deletePerson(idsChecked[0]).then((returnedPerson) => {
-          setPersons(persons.filter((person) => person.id !== idsChecked[0]))
-        })
-        setIdsChecked([])
-      }
-    } else {
-      const confirm = window.confirm('Delete All users?')
-      if (confirm) {
-        setIsLoading(true)
-        const deletePromises = idsChecked.map((id) =>
-          personsService.deletePerson(id)
-        )
-        Promise.all(deletePromises).then(() => {
-          setPersons(
-            persons.filter((person) => !idsChecked.includes(person.id))
-          )
+    if (!idsChecked.length <= 0) {
+      if (idsChecked.length === 1) {
+        const confirm = window.confirm('Delete User?')
+        if (confirm) {
+          personsService.deletePerson(idsChecked[0]).then((returnedPerson) => {
+            setPersons(persons.filter((person) => person.id !== idsChecked[0]))
+          })
           setIdsChecked([])
-          setIsLoading(false)
-        })
+        }
+      } else {
+        const confirm = window.confirm('Delete All users?')
+        if (confirm) {
+          setIsLoading(true)
+          const deletePromises = idsChecked.map((id) =>
+            personsService.deletePerson(id)
+          )
+          Promise.all(deletePromises).then(() => {
+            setPersons(
+              persons.filter((person) => !idsChecked.includes(person.id))
+            )
+            setIdsChecked([])
+            setIsLoading(false)
+          })
+        }
       }
     }
   }
@@ -167,7 +169,7 @@ function App() {
           LOADING...
         </h1>
       )}
-      <div className='bg-slate-800 text-white h-screen flex items-center justify-center flex-col'>
+      <div className='bg-black/95 text-white min-h-screen flex items-center justify-center flex-col'>
         <Navbar />
         <div>
           <div>
@@ -175,7 +177,7 @@ function App() {
               <>
                 <div
                   onClick={() => setShowInput(false)}
-                  className='absolute inset-0  z-10'
+                  className='absolute inset-0  z-10 '
                 ></div>
 
                 <PersonsForm
@@ -190,7 +192,7 @@ function App() {
             )}
           </div>
         </div>
-        <div className='mt-12 w-auto  mx-auto'>
+        <div className='w-full absolute  top-16 bottom-0 flex items-center justify-center'>
           <PersonsTable
             persons={persons}
             setUsersToDelete={setUsersToDelete}
