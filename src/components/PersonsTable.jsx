@@ -15,14 +15,15 @@ const PersonsTable = ({
     <div className='overflow-hidden w-5/6 sm:w-4/6 max-w-lg mx-auto absolute top-12 bottom-12 shadow-lg shadow-black/60 rounded-md'>
       <div className='head bg-[#111111]'>
         <div className='row flex justify-between  p-4'>
-          <div className='th flex-1 '>
+          <div className='th flex-[0.2] '>
             <input
               type='checkbox'
               onChange={(e) => setIsAllDisabled(e.target.checked)}
+              className='checkbox'
             />
           </div>
-          <div className='th flex-1  text-center'>Name</div>
-          <div className='th flex-1  text-center'>Number</div>
+          <div className='th flex-1  text-left font-bold'>Name</div>
+          <div className='th flex-1  text-left font-bold'>Number</div>
         </div>
       </div>
       <div className='body bg-[#333333] overflow-y-auto absolute bottom-0 w-full top-14'>
@@ -31,18 +32,19 @@ const PersonsTable = ({
             key={person.id}
             className='tr flex justify-between  shadow-[inset_0_-1px_0_0_hsla(0,0%,100%,.1)] py-3 px-4'
           >
-            <div className='flex-1  '>
+            <div className='flex-[0.2]  '>
               <input
                 id={person.id}
                 type='checkbox'
                 onChange={(e) => handleCheckbox(e)}
+                className='checkbox'
               />
             </div>
 
-            <div className='td flex-1  text-center'>
+            <div className='td flex-1  text-left'>
               <p>{person.name}</p>
             </div>
-            <div className='td flex-1  text-center'>
+            <div className='td flex-1  text-left'>
               <p>{person.number}</p>
             </div>
           </div>

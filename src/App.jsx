@@ -7,6 +7,7 @@ import PersonsTable from './components/PersonsTable'
 import Navbar from './components/navbar/Navbar'
 import { BrowserRouter, Router, Route } from 'react-router-dom'
 import BtnAdd from './components/buttons/BtnAdd'
+import Loader from './components/Loader'
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -37,10 +38,12 @@ function App() {
       if (idsChecked.length === 1) {
         const confirm = window.confirm('Delete User?')
         if (confirm) {
+          setIsLoading(true)
           personsService.deletePerson(idsChecked[0]).then((returnedPerson) => {
             setPersons(persons.filter((person) => person.id !== idsChecked[0]))
+            setIsLoading(false)
+            setIdsChecked([])
           })
-          setIdsChecked([])
         }
       } else {
         const confirm = window.confirm('Delete All users?')
@@ -146,9 +149,11 @@ function App() {
   }
 
   useEffect(() => {
-    personsService
-      .getPersons()
-      .then((initialPersons) => setPersons(initialPersons))
+    setIsLoading(true)
+    personsService.getPersons().then((initialPersons) => {
+      setPersons(initialPersons)
+      setIsLoading(false)
+    })
   }, [])
 
   useEffect(() => {
@@ -164,11 +169,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {isLoading && (
-        <h1 className='text-6xl absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-50'>
-          LOADING...
-        </h1>
-      )}
+      {isLoading && <Loader />}
       <div className='bg-black text-white min-h-screen flex items-center justify-center flex-col'>
         <Navbar />
         <div>
