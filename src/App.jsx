@@ -21,6 +21,7 @@ function App() {
   const [minNumber, setMinNumber] = useState(false)
   const [numberForm, setNumberForm] = useState(false)
   const [showInput, setShowInput] = useState(false)
+  const [usersToDelete, setUsersToDelete] = useState([])
 
   useEffect(() => {
     let nameRepeatedFromArray = persons.find(
@@ -154,7 +155,7 @@ function App() {
           </div>
         </div>
         <div className='mt-12 w-auto  mx-auto'>
-          <PersonsTable persons={persons} />
+          <PersonsTable persons={persons} setUsersToDelete={setUsersToDelete} />
         </div>
       </div>
       <BtnAdd setShowInput={setShowInput} />
