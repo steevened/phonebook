@@ -46,7 +46,7 @@ function App() {
           })
         }
       } else {
-        const confirm = window.confirm('Delete All users?')
+        const confirm = window.confirm(`Delete ${idsChecked.length} User?`)
         if (confirm) {
           setIsLoading(true)
           const deletePromises = idsChecked.map((id) =>
