@@ -4,7 +4,7 @@ import { FaPhoneSquareAlt } from 'react-icons/fa'
 
 const Navbar = () => {
   return (
-    <div className='bg-black fixed top-0 w-full text-center py-4 md:py-5 shadow-black/50 shadow-lg'>
+    <div className='bg-black shadow-[inset_0_-1px_0_0_hsla(0,0%,100%,.1)] fixed top-0 w-full text-center py-4 md:py-5'>
       <Link className='text-xl tracking-wider font-bold ' to='/'>
         <div className='flex items-center justify-center gap-2'>
           <FaPhoneSquareAlt className='text-3xl' />

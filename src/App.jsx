@@ -165,11 +165,11 @@ function App() {
   return (
     <BrowserRouter>
       {isLoading && (
-        <h1 className='text-6xl absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2'>
+        <h1 className='text-6xl absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-50'>
           LOADING...
         </h1>
       )}
-      <div className='bg-black/95 text-white min-h-screen flex items-center justify-center flex-col'>
+      <div className='bg-black text-white min-h-screen flex items-center justify-center flex-col'>
         <Navbar />
         <div>
           <div>

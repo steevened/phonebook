@@ -12,26 +12,26 @@ const PersonsTable = ({
   // console.log(idsChecked)
 
   return (
-    <div className='overflow-hidden w-5/6 sm:w-4/6 max-w-lg mx-auto absolute top-12 shadow-lg shadow-black/60'>
-      <div className='head bg-neutral-900'>
+    <div className='overflow-hidden w-5/6 sm:w-4/6 max-w-lg mx-auto absolute top-12 bottom-12 shadow-lg shadow-black/60 rounded-md'>
+      <div className='head bg-[#111111]'>
         <div className='row flex justify-between  p-4'>
-          <div className='th '>
+          <div className='th flex-1 '>
             <input
               type='checkbox'
               onChange={(e) => setIsAllDisabled(e.target.checked)}
             />
           </div>
-          <div className='th'>Name</div>
-          <div className='th'>Number</div>
+          <div className='th flex-1  text-center'>Name</div>
+          <div className='th flex-1  text-center'>Number</div>
         </div>
       </div>
-      <div className='body bg-neutral-700 overflow-auto'>
+      <div className='body bg-[#333333] overflow-y-auto absolute bottom-0 w-full top-14'>
         {persons.map((person) => (
           <div
             key={person.id}
-            className='tr flex justify-between border-t border-neutral-500 py-3 px-4'
+            className='tr flex justify-between  shadow-[inset_0_-1px_0_0_hsla(0,0%,100%,.1)] py-3 px-4'
           >
-            <div>
+            <div className='flex-1  '>
               <input
                 id={person.id}
                 type='checkbox'
@@ -39,16 +39,16 @@ const PersonsTable = ({
               />
             </div>
 
-            <div className='td'>
+            <div className='td flex-1  text-center'>
               <p>{person.name}</p>
             </div>
-            <div className='td'>
+            <div className='td flex-1  text-center'>
               <p>{person.number}</p>
             </div>
           </div>
         ))}
       </div>
-      <div className='ft border-t py-2 border-neutral-500 bg-neutral-900 flex justify-between items-center px-5 h-12'>
+      <div className='ft py-2 bg-[#111111] flex justify-between items-center px-5 h-12 absolute w-full bottom-0'>
         <div>
           {idsChecked.length <= 0 ? (
             <p></p>
