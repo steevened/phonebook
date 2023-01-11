@@ -22,6 +22,7 @@ function App() {
   const [numberForm, setNumberForm] = useState(false)
   const [showInput, setShowInput] = useState(false)
   const [usersToDelete, setUsersToDelete] = useState([])
+  const [idsChecked, setIdsChecked] = useState([])
 
   useEffect(() => {
     let nameRepeatedFromArray = persons.find(
@@ -30,13 +31,31 @@ function App() {
     setNameRepeated(nameRepeatedFromArray)
   }, [newName])
 
-  const handleDelete = (id) => {
-    const personToDelete = persons.find((person) => person.id === id)
-    const confirm = window.confirm(`Delete ${personToDelete.name}?`)
-    if (confirm) {
-      personsService.deletePerson(id).then((returnedPerson) => {
-        setPersons(persons.filter((person) => person.id !== id))
-      })
+  const handleDelete = () => {
+    // const personToDelete = persons.find((person) => person.id === id)
+    // const confirm = window.confirm(`Delete ${personToDelete.name}?`)
+    // if (confirm) {
+    //   personsService.deletePerson(id).then((returnedPerson) => {
+    //     setPersons(persons.filter((person) => person.id !== id))
+    //   })
+    // }
+    idsChecked.forEach((id) => {
+      const confirm = window.confirm('Delete All users?')
+      if (confirm) {
+        personsService.deletePerson(id).then((returnedPerson) => {
+          setPersons(persons.filter((person) => person.id !== id))
+        })
+      }
+    })
+    setIdsChecked([])
+  }
+
+  const handleCheckbox = (e) => {
+    if (e.target.checked) {
+      if (!idsChecked.includes(e.target.id))
+        setIdsChecked(idsChecked.concat(e.target.id))
+    } else {
+      setIdsChecked(idsChecked.filter((id) => id !== e.target.id))
     }
   }
 
@@ -149,13 +168,20 @@ function App() {
                   setNewName={setNewName}
                   newNumber={newNumber}
                   setNewNumber={setNewNumber}
+                  handleDelete={handleDelete}
                 />
               </>
             )}
           </div>
         </div>
         <div className='mt-12 w-auto  mx-auto'>
-          <PersonsTable persons={persons} setUsersToDelete={setUsersToDelete} />
+          <PersonsTable
+            persons={persons}
+            setUsersToDelete={setUsersToDelete}
+            idsChecked={idsChecked}
+            handleCheckbox={handleCheckbox}
+            handleDelete={handleDelete}
+          />
         </div>
       </div>
       <BtnAdd setShowInput={setShowInput} />

@@ -1,18 +1,13 @@
 import React, { useState } from 'react'
+import { IoTrashOutline } from 'react-icons/io5'
 
-const PersonsTable = ({ persons }) => {
-  const [isDisabled, setIsDisabled] = useState(false)
-  const [idsChecked, setIdsChecked] = useState([])
-  const [isChecked, setIsChecked] = useState(false)
-
-  const handleCheckbox = (e) => {
-    if (e.target.checked) {
-      if (!idsChecked.includes(e.target.id))
-        setIdsChecked(idsChecked.concat(e.target.id))
-    } else {
-      setIdsChecked(idsChecked.filter((id) => id !== e.target.id))
-    }
-  }
+const PersonsTable = ({
+  persons,
+  idsChecked,
+  handleCheckbox,
+  handleDelete,
+}) => {
+  const [isAllDisabled, setIsAllDisabled] = useState(false)
 
   console.log(idsChecked)
 
@@ -21,7 +16,10 @@ const PersonsTable = ({ persons }) => {
       <div className='head'>
         <div className='row flex justify-between  p-4'>
           <div className='th '>
-            <input type='checkbox' />
+            <input
+              type='checkbox'
+              onChange={(e) => setIsAllDisabled(e.target.checked)}
+            />
           </div>
           <div className='th'>Name</div>
           <div className='th'>Number</div>
@@ -50,7 +48,11 @@ const PersonsTable = ({ persons }) => {
           </div>
         ))}
       </div>
-      <div className='ft border-t py-5'></div>
+      <div className='ft border-t py-5'>
+        <button onClick={handleDelete}>
+          <IoTrashOutline />
+        </button>
+      </div>
     </div>
   )
 }
