@@ -171,7 +171,7 @@ function App() {
   return (
     <BrowserRouter>
       {isLoading && <Loader />}
-      <div className='bg-black text-white min-h-screen flex items-center justify-center flex-col'>
+      <div className='bg-black text-[#ccc] min-h-screen flex items-center justify-center flex-col'>
         <Navbar />
         <div>
           <div>

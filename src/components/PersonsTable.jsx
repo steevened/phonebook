@@ -15,11 +15,11 @@ const PersonsTable = ({
     <div className='overflow-hidden w-5/6 sm:w-4/6 max-w-lg mx-auto absolute top-12 bottom-12 shadow-lg shadow-black/60 rounded-md flex flex-col'>
       <div className='bg-[#111111] row flex justify-between items-center px-4 h-16'>
         <div className='th flex-[0.3] '>
-          <input
+          {/* <input
             type='checkbox'
             onChange={(e) => setIsAllDisabled(e.target.checked)}
             className='checkbox'
-          />
+          /> */}
         </div>
         <div className='th flex-1  text-left font-bold'>Name</div>
         <div className='th flex-1  text-left font-bold'>Number</div>

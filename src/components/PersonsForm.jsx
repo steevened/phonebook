@@ -10,8 +10,8 @@ const PersonsForm = ({
 }) => {
   return (
     <form
-      className={`absolute inset-0 transition-all ease-in-out duration-700  border-[#333] border rounded-lg flex items-center justify-center flex-col z-20 bg-black -translate-x-1/2  top-1/2 left-1/2 ${
-        showInput ? '-translate-y-1/2' : '-translate-y-full top-0'
+      className={`absolute inset-0 transition-all ease-in-out duration-700  border-[#333] hover:border-white border rounded-lg flex items-center justify-center flex-col z-20 bg-black -translate-x-1/2 h-1/2  left-1/2  ${
+        showInput ? 'top-1/2 -translate-y-1/2' : '-translate-y-full top-0'
       }`}
       onSubmit={handleSubmit}
     >
