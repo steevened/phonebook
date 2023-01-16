@@ -25,6 +25,7 @@ function App() {
   const [usersToDelete, setUsersToDelete] = useState([])
   const [idsChecked, setIdsChecked] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isShort, setIsShort] = useState(false)
 
   useEffect(() => {
     let nameRepeatedFromArray = persons.find(
@@ -110,42 +111,45 @@ function App() {
     } else if (!newNumber) {
       alert(`Add a number`)
     } else {
-      setIsLoading(true)
-      setNotificationShowed(true)
-      setNumberChanged(null)
-      setShowInput(false)
-      personsService
-        .createPerson(personObject)
-        .then((returnedPerson) => {
-          setPersons(persons.concat(returnedPerson))
-          setNewName('')
-          setNewNumber('')
-          setMinName(false)
-          setMinNumber(false)
-          setNumberForm(false)
-          setIsLoading(false)
-        })
-        .catch((error) => {
-          const { data } = error.response
-          if (data.includes('name: ')) {
-            setMinName(true)
-          }
-          if (data.includes('number: ')) {
-            setMinNumber(true)
-          }
-          if (!data.includes('name: ') && data.includes('number: ')) {
+      if (!isShort) {
+        setIsLoading(true)
+        setNotificationShowed(true)
+        setNumberChanged(null)
+        setShowInput(false)
+        personsService
+          .createPerson(personObject)
+          .then((returnedPerson) => {
+            setPersons(persons.concat(returnedPerson))
+            setNewName('')
+            setNewNumber('')
             setMinName(false)
-            setMinNumber(true)
-          }
-          if (data.includes('name: ') && !data.includes('number: ')) {
-            setMinName(true)
             setMinNumber(false)
-          }
-          if (data.includes('number: Validator')) {
-            setNumberForm(true)
-          }
-          // console.log(data)
-        })
+            setNumberForm(false)
+            setIsLoading(false)
+            setIsShort(false)
+          })
+          .catch((error) => {
+            const { data } = error.response
+            if (data.includes('name: ')) {
+              setMinName(true)
+            }
+            if (data.includes('number: ')) {
+              setMinNumber(true)
+            }
+            if (!data.includes('name: ') && data.includes('number: ')) {
+              setMinName(false)
+              setMinNumber(true)
+            }
+            if (data.includes('name: ') && !data.includes('number: ')) {
+              setMinName(true)
+              setMinNumber(false)
+            }
+            if (data.includes('number: Validator')) {
+              setNumberForm(true)
+            }
+            // console.log(data)
+          })
+      }
     }
   }
 
@@ -190,6 +194,8 @@ function App() {
               setNewNumber={setNewNumber}
               handleDelete={handleDelete}
               showInput={showInput}
+              isShort={isShort}
+              setIsShort={setIsShort}
             />
           </div>
         </div>

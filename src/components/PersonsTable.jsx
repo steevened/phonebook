@@ -48,7 +48,7 @@ const PersonsTable = ({
           </div>
         ))}
       </div>
-      <div className='bg-[#111111] flex justify-between items-center px-5 h-12  w-full'>
+      <div className='bg-[#111111] flex justify-between items-center px-10 md:px-5 h-12  w-full'>
         <div>
           {idsChecked.length <= 0 ? (
             <p></p>
