@@ -180,7 +180,10 @@ function App() {
         <div>
           <div>
             <div
-              onClick={() => setShowInput(false)}
+              onClick={() => {
+                setShowInput(false)
+                setIsShort(false)
+              }}
               className={`absolute inset-0 z-10 backdrop-blur-sm transition-all duration-500 ease-in-out bg-black/95 ${
                 showInput ? 'opacity-100' : 'opacity-0 -z-40'
               }`}
