@@ -17,7 +17,7 @@ function App() {
   const [newName, setNewName] = useState('')
   const [nameRepeated, setNameRepeated] = useState(null)
   const [showNameModal, setShowNameModal] = useState(false)
-  const [loaderTime, setLoaderTime] = useState(100)
+  const [loaderTime, setLoaderTime] = useState(true)
   const [intervalId, setIntervalId] = useState(null)
 
   // const [notificationShowed, setNotificationShowed] = useState(false)
@@ -160,6 +160,14 @@ function App() {
   //   }
   // }
 
+  const handleTimeOut = (time) => {
+    let timeOut = setTimeout(() => {
+      setShowNameModal(null)
+      setLoaderTime(true)
+    }, time)
+    return () => clearTimeout(timeOut)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const personObject = {
@@ -171,21 +179,10 @@ function App() {
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     )
     if (nameExist) {
+      setLoaderTime(false)
       setNameRepeated(nameExist?.name)
       setShowNameModal(true)
-      // setLoaderTime(100)
-      setIntervalId(
-        setInterval(() => {
-          if (loaderTime > 0) {
-            setLoaderTime(loaderTime - 1)
-          } else {
-            clearInterval(intervalId)
-          }
-        }, 1)
-      )
-      setTimeout(() => {
-        setShowNameModal(false)
-      }, 3500)
+      handleTimeOut(3000)
     } else {
       setNameRepeated(null)
       setShowNameModal(false)
