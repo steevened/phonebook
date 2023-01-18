@@ -16,7 +16,7 @@ function App() {
   const [newName, setNewName] = useState('')
   const [nameRepeated, setNameRepeated] = useState(null)
   const [showNameModal, setShowNameModal] = useState(false)
-  const [loaderTime, setLoaderTime] = useState(true)
+  const [isBarHidden, setIsBarHidden] = useState(false)
   const [updatePerson, setUpdatePerson] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [addedPersonName, setAddedPersonName] = useState('')
@@ -77,7 +77,7 @@ function App() {
   const handleTimeOut = (time) => {
     let timeOut = setTimeout(() => {
       setShowSuccessModal(false)
-      // setLoaderTime(false)
+      setIsBarHidden(false)
     }, time)
     return () => clearTimeout(timeOut)
   }
@@ -130,13 +130,13 @@ function App() {
       setIsLoading(true)
       personsService.createPerson(personObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson))
+        setIsBarHidden(true)
         setNewName('')
         setNewNumber('')
         setIsLoading(false)
         setIsShort(false)
         setAddedPersonName(returnedPerson.name)
         setShowSuccessModal(true)
-        setLoaderTime(false)
         handleTimeOut(4000)
       })
     }
@@ -154,6 +154,8 @@ function App() {
       setIsLoading(false)
     })
   }, [])
+
+  console.log(isBarHidden)
 
   return (
     <BrowserRouter>
@@ -210,7 +212,8 @@ function App() {
       <SuccesAlert
         showSuccessModal={showSuccessModal}
         addedPersonName={addedPersonName}
-        loaderTime={loaderTime}
+        isBarHidden={isBarHidden}
+        setIsBarHidden={setIsBarHidden}
       />
       <BtnAdd setShowInput={setShowInput} />
     </BrowserRouter>

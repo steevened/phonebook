@@ -3,6 +3,7 @@ const InputNumber = ({ value, onChange, numberIsValid, setNumberIsValid }) => {
   return (
     <>
       <input
+        maxLength={12}
         value={value}
         onChange={(e) => {
           setNumberIsValid(!phoneNumberPattern.test(e.target.value))
