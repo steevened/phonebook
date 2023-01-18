@@ -13,6 +13,9 @@ const PersonsForm = ({
   showInput,
   isShort,
   setIsShort,
+  numberIsValid,
+  setNumberIsValid,
+  handleNameChange,
 }) => {
   return (
     <form
@@ -27,12 +30,14 @@ const PersonsForm = ({
           isShort={isShort}
           id='name'
           value={newName}
-          onChange={(e) => setNewName(e.target.value)}
+          onChange={(e) => handleNameChange(e)}
         />
         <Label htmlFor='name'>Name</Label>
       </InputContainer>
       <InputContainer>
         <InputNumber
+          numberIsValid={numberIsValid}
+          setNumberIsValid={setNumberIsValid}
           id='number'
           value={newNumber}
           onChange={(e) => setNewNumber(e.target.value)}
