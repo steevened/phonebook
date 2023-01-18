@@ -95,6 +95,7 @@ function App() {
             person.id !== nameExist.id ? person : returnedPerson
           )
         )
+        setIsBarHidden(true)
         setIsLoading(false)
         setShowInput(false)
         setNameRepeated(null)
@@ -103,6 +104,8 @@ function App() {
         setUpdatePerson(false)
         setShowNameModal(false)
         setAddedPersonName(returnedPerson.name)
+        setShowSuccessModal(true)
+        handleTimeOut(4000)
       })
   }
 

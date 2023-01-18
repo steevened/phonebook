@@ -1,11 +1,6 @@
 import React from 'react'
 
-const SuccesAlert = ({
-  addedPersonName,
-  setIsBarHidden,
-  isBarHidden,
-  showSuccessModal,
-}) => {
+const SuccesAlert = ({ addedPersonName, isBarHidden, showSuccessModal }) => {
   return (
     <div
       className={`absolute border border-[#333333] rounded-lg px-7 py-4 z-50 bg-black/90 bottom-5 transition-all duration-500 flex flex-col items-center overflow-hidden ${
