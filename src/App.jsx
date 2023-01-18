@@ -20,13 +20,9 @@ function App() {
   const [updatePerson, setUpdatePerson] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [addedPersonName, setAddedPersonName] = useState('')
-
-  const [numberChanged, setNumberChanged] = useState(null)
-  const [isError, setIsError] = useState(false)
-  const [minName, setMinName] = useState(false)
-  const [minNumber, setMinNumber] = useState(false)
-  const [numberForm, setNumberForm] = useState(false)
   const [showInput, setShowInput] = useState(false)
+  const [filterValue, setFilterValue] = useState('')
+
   const [usersToDelete, setUsersToDelete] = useState([])
   const [idsChecked, setIdsChecked] = useState([])
   const [isLoading, setIsLoading] = useState(false)
@@ -150,6 +146,10 @@ function App() {
     setNewName(e.target.value)
   }
 
+  const handleFilter = (e) => {
+    setFilterValue(e.target.value)
+  }
+
   useEffect(() => {
     setIsLoading(true)
     personsService.getPersons().then((initialPersons) => {
@@ -157,8 +157,6 @@ function App() {
       setIsLoading(false)
     })
   }, [])
-
-  console.log(isBarHidden)
 
   return (
     <BrowserRouter>
@@ -200,6 +198,8 @@ function App() {
             idsChecked={idsChecked}
             handleCheckbox={handleCheckbox}
             handleDelete={handleDelete}
+            handleFilter={handleFilter}
+            filterValue={filterValue}
           />
         </div>
       </div>
