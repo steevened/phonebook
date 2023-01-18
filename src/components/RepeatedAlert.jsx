@@ -4,8 +4,6 @@ const RepeatedAlert = ({
   nameRepeated,
   setShowNameModal,
   showNameModal,
-  loaderTime,
-  setLoaderTime,
   setUpdatePerson,
   handleUpdatePerson,
   persons,
@@ -48,14 +46,6 @@ const RepeatedAlert = ({
           Confirm
         </button>
       </div>
-
-      <div
-        className={`absolute w-full ${
-          loaderTime
-            ? '-translate-x-0 duration-75 delay-300'
-            : '-translate-x-full duration-[2500ms] delay-500'
-        } h-1 bottom-0 bg-[#00C896] transition-all  ease-in`}
-      ></div>
     </div>
   )
 }

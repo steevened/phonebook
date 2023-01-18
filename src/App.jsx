@@ -2,25 +2,25 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import PersonsForm from './components/PersonsForm'
 import personsService from './services/persons'
-import Notification from './components/Notification'
 import PersonsTable from './components/PersonsTable'
 import Navbar from './components/navbar/Navbar'
 import { BrowserRouter, Router, Route } from 'react-router-dom'
 import BtnAdd from './components/buttons/BtnAdd'
 import Loader from './components/Loader'
 import RepeatedAlert from './components/RepeatedAlert'
+import SuccesAlert from './components/SuccesAlert'
 
 function App() {
   const [persons, setPersons] = useState([])
-  // const [noPerson, setNoPerson] = useState(false)
   const [newNumber, setNewNumber] = useState('')
   const [newName, setNewName] = useState('')
   const [nameRepeated, setNameRepeated] = useState(null)
   const [showNameModal, setShowNameModal] = useState(false)
   const [loaderTime, setLoaderTime] = useState(true)
   const [updatePerson, setUpdatePerson] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [addedPersonName, setAddedPersonName] = useState('')
 
-  // const [notificationShowed, setNotificationShowed] = useState(false)
   const [numberChanged, setNumberChanged] = useState(null)
   const [isError, setIsError] = useState(false)
   const [minName, setMinName] = useState(false)
@@ -32,13 +32,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [isShort, setIsShort] = useState(false)
   const [numberIsValid, setNumberIsValid] = useState(false)
-
-  // useEffect(() => {
-  //   let nameRepeatedFromArray = persons.find(
-  //     (person) => person.name.toLowerCase() === newName.toLowerCase()
-  //   )
-  //   setNameRepeated(nameRepeatedFromArray)
-  // }, [newName])
 
   const handleDelete = () => {
     if (!idsChecked.length <= 0) {
@@ -81,89 +74,10 @@ function App() {
     }
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   const personObject = {
-  //     name: newName,
-  //     number: newNumber,
-  //   }
-  //   if (nameRepeated && newNumber) {
-  //     const id = nameRepeated.id
-  //     let phoneChanged = { ...nameRepeated, number: newNumber }
-  //     const confirm = window.confirm(
-  //       `${nameRepeated.name} is already added to phonebook, replace the old number with a new one?`
-  //     )
-  //     if (confirm) {
-  //       setIsLoading(true)
-  //       personsService
-  //         .updatePerson(id, phoneChanged)
-  //         .then((returnedPerson) => {
-  //           setPersons(
-  //             persons.map((person) =>
-  //               person.id !== id ? person : returnedPerson
-  //             )
-  //           )
-  //           setIsLoading(false)
-  //         })
-  //         .catch(() => setIsError(true))
-  //       setNewName('')
-  //       setNewNumber('')
-  //       // setNotificationShowed(true)
-  //       setNumberChanged(phoneChanged)
-  //     }
-  //   } else if (!newName) {
-  //     alert(`Add a name`)
-  //   } else if (!newNumber) {
-  //     alert(`Add a number`)
-  //   } else {
-  //     if (!isShort) {
-  //       // setNotificationShowed(true)
-  //       setShowInput(false)
-  //       setNumberChanged(null)
-  //       setIsLoading(true)
-  //       personsService
-  //         .createPerson(personObject)
-  //         .then((returnedPerson) => {
-  //           setPersons(persons.concat(returnedPerson))
-  //           setNewName('')
-  //           setNewNumber('')
-  //           setMinName(false)
-  //           setMinNumber(false)
-  //           setNumberForm(false)
-  //           setIsLoading(false)
-  //           setIsShort(false)
-  //         })
-  //         .catch((error) => {
-  //           const { data } = error.response
-  //           if (data.includes('name: ')) {
-  //             setMinName(true)
-  //           }
-  //           if (data.includes('number: ')) {
-  //             setMinNumber(true)
-  //           }
-  //           if (!data.includes('name: ') && data.includes('number: ')) {
-  //             setMinName(false)
-  //             setMinNumber(true)
-  //           }
-  //           if (data.includes('name: ') && !data.includes('number: ')) {
-  //             setMinName(true)
-  //             setMinNumber(false)
-  //           }
-  //           if (data.includes('number: Validator')) {
-  //             setNumberForm(true)
-  //           }
-  //           // console.log(data)
-  //         })
-  //     } else {
-  //       setIsShort(true)
-  //     }
-  //   }
-  // }
-
   const handleTimeOut = (time) => {
     let timeOut = setTimeout(() => {
-      setShowNameModal(null)
-      setLoaderTime(true)
+      setShowSuccessModal(false)
+      // setLoaderTime(false)
     }, time)
     return () => clearTimeout(timeOut)
   }
@@ -188,6 +102,7 @@ function App() {
         setNewNumber('')
         setUpdatePerson(false)
         setShowNameModal(false)
+        setAddedPersonName(returnedPerson.name)
       })
   }
 
@@ -202,10 +117,8 @@ function App() {
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     )
     if (nameExist) {
-      // setLoaderTime(false)
       setNameRepeated(nameExist?.name)
       setShowNameModal(true)
-      // handleTimeOut(3000)
       setUpdatePerson(false)
       if (updatePerson) {
         handleUpdatePerson(nameExist)
@@ -219,10 +132,12 @@ function App() {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
-        setMinName(false)
-        setMinNumber(false)
         setIsLoading(false)
         setIsShort(false)
+        setAddedPersonName(returnedPerson.name)
+        setShowSuccessModal(true)
+        setLoaderTime(false)
+        handleTimeOut(4000)
       })
     }
   }
@@ -238,19 +153,7 @@ function App() {
       setPersons(initialPersons)
       setIsLoading(false)
     })
-    // .catch((error) => (error ? setNoPerson(true) : setNoPerson(false)))
   }, [])
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (notificationShowed) {
-  //       setNotificationShowed(false)
-  //     }
-  //   }, 5000)
-  //   // setNumberChanged(null)
-  // }, [notificationShowed])
-
-  // console.log(`min name: ${minName}, min number: ${minNumber}`)
 
   return (
     <BrowserRouter>
@@ -299,12 +202,15 @@ function App() {
         nameRepeated={nameRepeated}
         setShowNameModal={setShowNameModal}
         showNameModal={showNameModal}
-        loaderTime={loaderTime}
-        setLoaderTime={setLoaderTime}
         setUpdatePerson={setUpdatePerson}
         handleUpdatePerson={handleUpdatePerson}
         persons={persons}
         newName={newName}
+      />
+      <SuccesAlert
+        showSuccessModal={showSuccessModal}
+        addedPersonName={addedPersonName}
+        loaderTime={loaderTime}
       />
       <BtnAdd setShowInput={setShowInput} />
     </BrowserRouter>
