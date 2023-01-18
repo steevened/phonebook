@@ -18,7 +18,7 @@ function App() {
   const [nameRepeated, setNameRepeated] = useState(null)
   const [showNameModal, setShowNameModal] = useState(false)
   const [loaderTime, setLoaderTime] = useState(true)
-  const [intervalId, setIntervalId] = useState(null)
+  const [updatePerson, setUpdatePerson] = useState(false)
 
   // const [notificationShowed, setNotificationShowed] = useState(false)
   const [numberChanged, setNumberChanged] = useState(null)
@@ -168,6 +168,29 @@ function App() {
     return () => clearTimeout(timeOut)
   }
 
+  const handleUpdatePerson = (nameExist) => {
+    setIsLoading(true)
+    personsService
+      .updatePerson(nameExist.id, {
+        name: newName,
+        number: newNumber,
+      })
+      .then((returnedPerson) => {
+        setPersons(
+          persons.map((person) =>
+            person.id !== nameExist.id ? person : returnedPerson
+          )
+        )
+        setIsLoading(false)
+        setShowInput(false)
+        setNameRepeated(null)
+        setNewName('')
+        setNewNumber('')
+        setUpdatePerson(false)
+        setShowNameModal(false)
+      })
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
     const personObject = {
@@ -179,10 +202,14 @@ function App() {
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     )
     if (nameExist) {
-      setLoaderTime(false)
+      // setLoaderTime(false)
       setNameRepeated(nameExist?.name)
       setShowNameModal(true)
-      handleTimeOut(3000)
+      // handleTimeOut(3000)
+      setUpdatePerson(false)
+      if (updatePerson) {
+        handleUpdatePerson(nameExist)
+      }
     } else {
       setNameRepeated(null)
       setShowNameModal(false)
@@ -274,6 +301,10 @@ function App() {
         showNameModal={showNameModal}
         loaderTime={loaderTime}
         setLoaderTime={setLoaderTime}
+        setUpdatePerson={setUpdatePerson}
+        handleUpdatePerson={handleUpdatePerson}
+        persons={persons}
+        newName={newName}
       />
       <BtnAdd setShowInput={setShowInput} />
     </BrowserRouter>
