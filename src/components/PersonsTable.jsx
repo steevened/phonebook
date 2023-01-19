@@ -6,19 +6,17 @@ const PersonsTable = ({
   persons,
   idsChecked,
   handleCheckbox,
-  handleDelete,
   handleFilter,
   filterValue,
+  handleShowDeleteModal,
 }) => {
-  const [isAllDisabled, setIsAllDisabled] = useState(false)
-
   return (
     <div className='overflow-hidden w-5/6 sm:w-4/6 max-w-lg mx-auto absolute top-12 bottom-12 shadow-lg shadow-black/60 rounded-md flex flex-col'>
       <div className='bg-[#111111] row flex justify-between items-center px-4 h-16'>
         <div className='th flex-[0.3] ml-1'>
           <button
             className=''
-            onClick={handleDelete}
+            onClick={handleShowDeleteModal}
             disabled={idsChecked.length <= 0 ? true : false}
           >
             <IoTrashOutline
@@ -46,7 +44,7 @@ const PersonsTable = ({
                   id={person.id}
                   type='checkbox'
                   onChange={(e) => handleCheckbox(e)}
-                  className='checkbox '
+                  className='checkbox rounded-sm'
                 />
               </div>
 
@@ -65,7 +63,7 @@ const PersonsTable = ({
             <input
               type='text'
               placeholder='Search'
-              className='input input-sm input-ghost focus:outline-none'
+              className='input input-sm input-ghost focus:outline-none rounded-lg mt-[2px]'
               onChange={handleFilter}
               value={filterValue}
             />

@@ -9,6 +9,7 @@ import BtnAdd from './components/buttons/BtnAdd'
 import Loader from './components/Loader'
 import RepeatedAlert from './components/RepeatedAlert'
 import SuccesAlert from './components/SuccesAlert'
+import DeleteNotification from './components/DeleteNotification'
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -22,8 +23,10 @@ function App() {
   const [addedPersonName, setAddedPersonName] = useState('')
   const [showInput, setShowInput] = useState(false)
   const [filterValue, setFilterValue] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [userToDelete, setUserToDelete] = useState([])
 
-  const [usersToDelete, setUsersToDelete] = useState([])
   const [idsChecked, setIdsChecked] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isShort, setIsShort] = useState(false)
@@ -32,33 +35,36 @@ function App() {
   const handleDelete = () => {
     if (!idsChecked.length <= 0) {
       if (idsChecked.length === 1) {
-        const name = persons.filter((person) => person.id === idsChecked[0])
-        const confirm = window.confirm(`Delete ${name[0].name}?`)
-        if (confirm) {
-          setIsLoading(true)
-          personsService.deletePerson(idsChecked[0]).then(() => {
-            setPersons(persons.filter((person) => person.id !== idsChecked[0]))
-            setIsLoading(false)
-            setIdsChecked([])
-          })
-        }
+        setIsLoading(true)
+        personsService.deletePerson(idsChecked[0]).then(() => {
+          setPersons(persons.filter((person) => person.id !== idsChecked[0]))
+          setIsLoading(false)
+          setIdsChecked([])
+          setShowDeleteModal(false)
+        })
       } else {
-        const confirm = window.confirm(`Delete ${idsChecked.length} User?`)
-        if (confirm) {
-          setIsLoading(true)
-          const deletePromises = idsChecked.map((id) =>
-            personsService.deletePerson(id)
+        setIsLoading(true)
+        const deletePromises = idsChecked.map((id) =>
+          personsService.deletePerson(id)
+        )
+        Promise.all(deletePromises).then(() => {
+          setPersons(
+            persons.filter((person) => !idsChecked.includes(person.id))
           )
-          Promise.all(deletePromises).then(() => {
-            setPersons(
-              persons.filter((person) => !idsChecked.includes(person.id))
-            )
-            setIdsChecked([])
-            setIsLoading(false)
-          })
-        }
+          setIsLoading(false)
+          setIdsChecked([])
+          setShowDeleteModal(false)
+        })
       }
     }
+  }
+
+  const handleShowDeleteModal = () => {
+    if (idsChecked.length === 1) {
+      const toDelete = persons.filter((person) => person.id === idsChecked[0])
+      setUserToDelete(toDelete)
+    }
+    setShowDeleteModal(true)
   }
 
   const handleCheckbox = (e) => {
@@ -158,6 +164,8 @@ function App() {
     })
   }, [])
 
+  console.log(showDeleteModal)
+
   return (
     <BrowserRouter>
       {isLoading && <Loader />}
@@ -194,12 +202,13 @@ function App() {
         <div className='w-full absolute  top-16 bottom-0 flex items-center justify-center'>
           <PersonsTable
             persons={persons}
-            setUsersToDelete={setUsersToDelete}
+            // setUsersToDelete={setUsersToDelete}
             idsChecked={idsChecked}
             handleCheckbox={handleCheckbox}
             handleDelete={handleDelete}
             handleFilter={handleFilter}
             filterValue={filterValue}
+            handleShowDeleteModal={handleShowDeleteModal}
           />
         </div>
       </div>
@@ -217,6 +226,15 @@ function App() {
         addedPersonName={addedPersonName}
         isBarHidden={isBarHidden}
         setIsBarHidden={setIsBarHidden}
+      />
+      <DeleteNotification
+        userToDelete={userToDelete}
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        confirmDelete={confirmDelete}
+        setConfirmDelete={setConfirmDelete}
+        handleDelete={handleDelete}
+        idsChecked={idsChecked}
       />
       <BtnAdd setShowInput={setShowInput} />
     </BrowserRouter>
