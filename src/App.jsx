@@ -172,7 +172,7 @@ function App() {
       <div className='bg-black text-[#ccc] min-h-screen flex items-center justify-center flex-col'>
         <Navbar />
         <div>
-          <div>
+          <div className='h-full w-full flex items-center justify-center'>
             <div
               onClick={() => {
                 setShowInput(false)

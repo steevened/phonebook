@@ -3,6 +3,9 @@ const InputNumber = ({ value, onChange, numberIsValid, setNumberIsValid }) => {
   return (
     <>
       <input
+        pattern='^(\d{2}-\d{6}|\d{3}-\d{6})\d*$'
+        title='Enter a valid phone number in the format: 00-000000 or 000-000000'
+        minLength={10}
         maxLength={14}
         value={value}
         onChange={(e) => {
